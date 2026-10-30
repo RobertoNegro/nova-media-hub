@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <VueSimpleContextMenu
-      :elementId="id || 'simple-ctx-menu'"
+      :elementId="menuElementId"
       :options="options"
       ref="vueSimpleContextMenu"
       @option-clicked="onOptionClicked"
@@ -28,6 +28,8 @@ import MediaViewModal from '../modals/MediaViewModal';
 import MediaReplaceModal from '../modals/MediaReplaceModal';
 import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
 
+let menuIdCounter = 0;
+
 export default {
   components: { VueSimpleContextMenu, MediaViewModal, MediaReplaceModal },
 
@@ -38,7 +40,14 @@ export default {
   data: () => ({
     showMediaViewModal: false,
     showMediaReplaceModal: false,
+    menuUid: ++menuIdCounter,
   }),
+
+  computed: {
+    menuElementId() {
+      return `${this.id || 'simple-ctx-menu'}-${this.menuUid}`;
+    },
+  },
 
   watch: {
     showEvent(newValue) {
